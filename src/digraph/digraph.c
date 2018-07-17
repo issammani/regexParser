@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "digraph.h"
+#include "../linkedlist/linkedlist.h"
 
 // creates a new directed graph
 diGraph new_diGraph(int V){
@@ -31,13 +32,30 @@ void validate_vertex(diGraph dg,int v){
 
 // add edge between two vertices
 void add_edge(diGraph* dg,int v, int w){
-    validateVertex(*dg,v);
-    validateVertex(*dg,w);
-    // adj[v].add(w);
-    // indegree[w]++;
-    // E++;
+    validate_vertex(*dg,v);
+    validate_vertex(*dg,w);
+    
+    add_to_adj(dg,v,w);
+    dg->indegree[w]++;
+    dg->E++;
 }
 
+void add_to_adj(diGraph* dg,int index,int value){
+    linkedList* tmp = dg->adj;
+    for(int i = 0; i < index; i++,tmp++);
+    add_node(tmp,value);
+}
+
+// prints adjacency list
+void print_adj(diGraph* dg){
+    
+    linkedList* tmp = dg->adj;
+    for(int i =0 ; i < dg->V; i++,tmp++){
+        printf("%d -->   ",i);
+        print(*tmp);
+        printf("\n");
+    }
+}
 // returns adj list for vertex v
 linkedList adj(int v);
 

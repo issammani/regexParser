@@ -43,4 +43,8 @@ int number_of_vertices(diGraph dg);
 //returns the number of edges
 int number_of_edges(diGraph dg);
 
+void add_to_adj(diGraph* dg,int index,int value);
+
+// prints adjacency list
+void print_adj(diGraph* dg);
 #endif

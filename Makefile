@@ -1,17 +1,17 @@
-main: main.o digraph.o
-	gcc -o main main.o digraph.o 
+main: main.o digraph.o linkedlist.o
+	gcc -std=c99 -o main main.o digraph.o linkedlist.o
 
-main.o: main.c src/linkedlist/linkedlist.h
-	gcc -c main.c
+main.o: main.c src/linkedlist/linkedlist.h src/digraph/digraph.h
+	gcc -std=c99 -c main.c
 
 nfa.o: nfa.c nfa.h
-	gcc -c nfa.c
+	gcc -std=c99 -c nfa.c
 
 linkedlist.o: src/linkedlist/linkedlist.c src/linkedlist/linkedlist.h
-	gcc -c src/linkedlist/linkedlist.c
+	gcc -std=c99 -c src/linkedlist/linkedlist.c
 
 digraph.o: src/digraph/digraph.c src/digraph/digraph.h linkedlist.o
-	gcc -c src/digraph/digraph.c
+	gcc -std=c99 -c src/digraph/digraph.c
 
 clean:
 	rm -f *.o main
