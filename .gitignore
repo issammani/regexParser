@@ -4,5 +4,7 @@
 
 !**/Makefile
 !**/LICENSE
+!src/
+!src/*
 .vscode/
 *.o
