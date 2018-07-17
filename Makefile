@@ -1,8 +1,7 @@
+main: main.o digraph.o
+	gcc -o main main.o digraph.o 
 
-mainl: main.o linkedlist.o
-	gcc -o mainl main.o linkedlist.o 
-
-mainl.o: main.c src/linkedlist/linkedlist.h
+main.o: main.c src/linkedlist/linkedlist.h
 	gcc -c main.c
 
 nfa.o: nfa.c nfa.h
@@ -11,8 +10,8 @@ nfa.o: nfa.c nfa.h
 linkedlist.o: src/linkedlist/linkedlist.c src/linkedlist/linkedlist.h
 	gcc -c src/linkedlist/linkedlist.c
 
-digraph.o: src/digraph/digraph.c src/digraph/digraph.h
+digraph.o: src/digraph/digraph.c src/digraph/digraph.h linkedlist.o
 	gcc -c src/digraph/digraph.c
 
 clean:
-	rm -f *.o mainl
+	rm -f *.o main

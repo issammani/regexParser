@@ -12,8 +12,11 @@ typedef struct node {
     struct node* next;
 }node;
 
-// linked list will be used for adjacency list
-typedef node* linkedList;
+// linked list 
+typedef struct {
+    int size;
+    node* head; 
+} linkedList;
 
 
 // creates an empty linked list
@@ -23,7 +26,10 @@ linkedList new_linkedList();
 void add_node(linkedList* l,int data);
 
 // returns 0 if not empty
-int is_empty(linkedList* l);
+int is_empty(node* n);
+
+//returns element at given index
+int get(linkedList l, int index);
 
 // prints a linked list
 void print(linkedList l);

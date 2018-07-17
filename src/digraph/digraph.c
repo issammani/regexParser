@@ -16,13 +16,27 @@ diGraph new_diGraph(int V){
     dg.E =0;
 
     dg.indegree = malloc(V * sizeof(int));
+    dg.adj = malloc(V * sizeof(linkedList));
+
+    return dg;
 }
 
 // makes sure vertex is in range
-void validate_vertex(int v);
+void validate_vertex(diGraph dg,int v){
+    if(v < 0 || v >= dg.V){
+        fprintf(stderr, "Vertex must be between 0 and %d\n",dg.V - 1);
+        exit(1);
+    }
+}
 
 // add edge between two vertices
-void add_edge(int v, int w);
+void add_edge(diGraph* dg,int v, int w){
+    validateVertex(*dg,v);
+    validateVertex(*dg,w);
+    // adj[v].add(w);
+    // indegree[w]++;
+    // E++;
+}
 
 // returns adj list for vertex v
 linkedList adj(int v);
@@ -34,7 +48,11 @@ int outdegree(int v);
 int indegree(int v);
 
 //returns the number of vertices
-int number_of_vertices();
+int number_of_vertices(diGraph dg){
+    return dg.V;
+}
 
 //returns the number of edges
-int number_of_edges();
+int number_of_edges(diGraph dg){
+    return dg.E;
+}

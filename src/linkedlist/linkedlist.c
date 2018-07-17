@@ -4,7 +4,9 @@
 
 // creates an empty linked list
 linkedList new_linkedList(){
-    linkedList l = NULL;
+    linkedList l ;
+    l.size = 0;
+    l.head = NULL;
     return l;
 }
 
@@ -14,23 +16,40 @@ void add_node(linkedList* l,int data){
     
     if(n == NULL)
         exit(1); // No memory
-    
+    l->size++;
     n->data = data;
-    n->next = *l;
+    n->next = l->head;
     
-    *l = n;
+    l->head = n;
 }
 
 // returns 0 if not empty
-int is_empty(linkedList* l){
-    return *l == NULL;
+int is_empty(node* n){
+    return n == NULL;
+}
+
+//returns element at given index
+int get(linkedList l, int index){
+    
+    int counter = 0;
+    index = (l.size - 1) - index;
+    node* tmp = l.head;
+    
+    while(tmp){
+        if(counter == index)
+            return tmp->data;
+        tmp = tmp->next;
+        counter++;
+    }
+    fprintf(stderr,"Given index %d is too big (%d) \n",index,counter);
+    exit(1);
 }
 
 // prints a linked list
 void print(linkedList l){
-    linkedList tmp = l;
+    node* tmp = l.head;
     
-    while(!is_empty(&tmp)){
+    while(!is_empty(tmp)){
         printf("%d \t",tmp->data);
         tmp = tmp->next;
     }
@@ -38,10 +57,10 @@ void print(linkedList l){
 
 // frees the linked list
 void free_list(linkedList l) {
-    node *tmp = l;
+    node *tmp = l.head;
     while (tmp) {
-        l = tmp;
+        l.head = tmp;
         tmp = tmp->next;
-        free(l);
+        free(l.head);
     }
 }

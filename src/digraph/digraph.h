@@ -9,31 +9,24 @@
 #ifndef _DIGRAPH
 #define _DIGRAPH
 
-
-typedef struct node {
-    int data; // here node id
-    struct node* next;
-}node;
-
-// linked list will be used for adjacency list
-typedef node* linkedList;
+#include "../linkedlist/linkedlist.h"
 
 // directed graph definition
 typedef struct {
     int V; // number of vertices
     int E; // number of edges
-    linkedList adj[]; // adj[v] = adjacency list for vertex v
-    int indegree[];   // indegree[v] = indegree of vertex v
+    linkedList* adj; // adj[v] = adjacency list for vertex v
+    int* indegree;   // indegree[v] = indegree of vertex v
 }diGraph;
 
 // creates a new directed graph
 diGraph new_diGraph(int V);
 
 // makes sure vertex is in range
-void validate_vertex(int v);
+void validate_vertex(diGraph dg,int v);
 
 // add edge between two vertices
-void add_edge(int v, int w);
+void add_edge(diGraph* dg,int v, int w);
 
 // returns adj list for vertex v
 linkedList adj(int v);
@@ -45,9 +38,9 @@ int outdegree(int v);
 int indegree(int v);
 
 //returns the number of vertices
-int number_of_vertices();
+int number_of_vertices(diGraph dg);
 
 //returns the number of edges
-int number_of_edges();
+int number_of_edges(diGraph dg);
 
 #endif
