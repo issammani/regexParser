@@ -6,5 +6,6 @@
 !**/LICENSE
 !src/
 !src/*
+src/*/test_*
 .vscode/
 *.o

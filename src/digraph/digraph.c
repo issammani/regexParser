@@ -7,7 +7,7 @@
 diGraph new_diGraph(int V){
     // make sure the number of vertices is greater than 0
     if( V < 0){
-        perror("new_diGraph : Number of vertices must be greater than zero.");
+        fprintf(stderr,"new_diGraph : Number of vertices must be greater than zero.\n");
         exit(1);
     }
     
