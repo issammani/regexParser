@@ -29,13 +29,13 @@ void validate_vertex(diGraph dg,int v);
 void add_edge(diGraph* dg,int v, int w);
 
 // returns adj list for vertex v
-linkedList adj(int v);
+linkedList adj(diGraph dg,int v);
 
 // returns the number of directed edges incident from vertex
-int outdegree(int v);
+int outdegree(diGraph dg,int v);
 
 // returns the number of directed edges incident to vertex
-int indegree(int v);
+int indegree(diGraph dg,int v);
 
 //returns the number of vertices
 int number_of_vertices(diGraph dg);
@@ -46,5 +46,5 @@ int number_of_edges(diGraph dg);
 void add_to_adj(diGraph* dg,int index,int value);
 
 // prints adjacency list
-void print_adj(diGraph* dg);
+void print_adj(diGraph dg);
 #endif

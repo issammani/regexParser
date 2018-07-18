@@ -47,23 +47,35 @@ void add_to_adj(diGraph* dg,int index,int value){
 }
 
 // prints adjacency list
-void print_adj(diGraph* dg){
+void print_adj(diGraph dg){
     
-    linkedList* tmp = dg->adj;
-    for(int i =0 ; i < dg->V; i++,tmp++){
+    linkedList* tmp = dg.adj;
+    for(int i =0 ; i < dg.V; i++,tmp++){
         printf("%d -->   ",i);
         print(*tmp);
         printf("\n");
     }
 }
 // returns adj list for vertex v
-linkedList adj(int v);
+linkedList adj(diGraph dg,int v){
+    validate_vertex(dg,v);
+    linkedList* tmp = dg.adj;
+    for(int i=0; i < v;i++,tmp++);
+    return *tmp;
+}
 
 // returns the number of directed edges incident from vertex
-int outdegree(int v);
+int outdegree(diGraph dg,int v){
+    validate_vertex(dg,v);
+    return adj(dg,v).size;
+    
+}
 
 // returns the number of directed edges incident to vertex
-int indegree(int v);
+int indegree(diGraph dg,int v){
+    validate_vertex(dg,v);
+    return dg.indegree[v];
+}
 
 //returns the number of vertices
 int number_of_vertices(diGraph dg){
