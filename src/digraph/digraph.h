@@ -3,13 +3,15 @@
  * Author: Issam Mani
  * this implementation was based on princeton's java implementation of
  * a directed graph
- * for more check : https://algs4.cs.princeton.edu/42digraph/Digraph.java.html
+ * for more check : + https://algs4.cs.princeton.edu/42digraph/Digraph.java.html
+ *                  + https://algs4.cs.princeton.edu/42digraph/DirectedDFS.java.html
  */
 
 #ifndef _DIGRAPH
 #define _DIGRAPH
 
 #include "../linkedlist/linkedlist.h"
+#include <stdbool.h>
 
 // directed graph definition
 typedef struct {
@@ -17,6 +19,7 @@ typedef struct {
     int E; // number of edges
     linkedList* adj; // adj[v] = adjacency list for vertex v
     int* indegree;   // indegree[v] = indegree of vertex v
+    bool* marked; // used for the dfs
 }diGraph;
 
 // creates a new directed graph
@@ -47,4 +50,17 @@ void add_to_adj(diGraph* dg,int index,int value);
 
 // prints adjacency list
 void print_adj(diGraph dg);
+
+//computes the vertices in digraph G that are reachable from the source vertex s.
+void directed_dfs(diGraph* dg, int s);
+
+//Computes the vertices in digraph G that are connected to vertices s
+void _directed_dfs(diGraph* dg, int* s,int size);
+
+//recusively finds reachable nodes from node v
+void dfs(diGraph* dg, int v);
+
+// prints all reachable vertices from source(s) s.
+void marked(diGraph* dg,int* s,int size);
+
 #endif

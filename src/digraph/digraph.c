@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "digraph.h"
 #include "../linkedlist/linkedlist.h"
 
@@ -85,4 +86,60 @@ int number_of_vertices(diGraph dg){
 //returns the number of edges
 int number_of_edges(diGraph dg){
     return dg.E;
+}
+
+//computes the vertices in digraph G that are reachable from the source vertex s.
+void directed_dfs(diGraph* dg, int s){
+
+    // allocate memory for marked
+    dg->marked = malloc(dg->V * sizeof(bool)); // by default marked is initialized to false
+    
+    validate_vertex(*dg,s);
+    
+    dfs(dg,s);
+
+    marked(dg,&s,1);
+
+    free(dg->marked); // no memory leaks
+            
+}
+
+
+//Computes the vertices in digraph G that are connected to vertices s
+void _directed_dfs(diGraph* dg, int* s, int size){
+    
+
+    // allocate memory for marked
+    dg->marked = malloc(dg->V * sizeof(bool));
+
+    // check if all sources exist
+    for(int i=0; i < size; i++)
+        validate_vertex(*dg,s[i]);
+    
+    for (int i=0; i < size ;i++)
+            if (!dg->marked[s[i]]) dfs(dg, s[i]);
+
+    marked(dg,s,size);
+    
+    free(dg->marked); // no memory leaks
+}
+
+//recusively finds reachable nodes from node v
+void dfs(diGraph* dg, int v){
+    dg->marked[v] = true;
+    linkedList neighbors = adj(*dg,v);
+
+    for (int i=0; i < neighbors.size ;i++) 
+            if (!dg->marked[get(neighbors,i)]) dfs(dg, get(neighbors,i));
+}
+
+void marked(diGraph* dg,int* s,int size){
+    
+    for(int i=0; i < size; i++)
+        printf("from %d :  ",s[i]);
+    
+    for(int i=0; i < dg->V; i++)
+        if(dg->marked[i])
+            printf("%d \t ",i);
+    printf("\n");
 }
