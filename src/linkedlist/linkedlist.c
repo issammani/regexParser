@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "linkedlist.h"
+#include "test_l.h"
 
 // creates an empty linked list
 linkedList new_linkedList(){
@@ -11,7 +11,7 @@ linkedList new_linkedList(){
 }
 
 // adds node to the list
-void add_node(linkedList* l,int data){
+void add_node(linkedList* l,void* data){
     node* n = malloc(sizeof(node));
     
     if(n == NULL)
@@ -29,7 +29,7 @@ int is_empty(node* n){
 }
 
 //returns element at given index
-int get(linkedList l, int index){
+void* get(linkedList l, int index){
     
     int counter = 0;
     index = (l.size - 1) - index;
@@ -46,11 +46,11 @@ int get(linkedList l, int index){
 }
 
 // prints a linked list
-void print(linkedList l){
+void print(linkedList l,void (*to_string)(void* data)){
     node* tmp = l.head;
     
     while(!is_empty(tmp)){
-        printf("%d \t",tmp->data);
+        to_string(tmp->data);
         tmp = tmp->next;
     }
 }

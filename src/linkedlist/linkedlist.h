@@ -8,12 +8,12 @@
 
 
 typedef struct node {
-    int data; // here node id
+    void* data; // here node id
     struct node* next;
 }node;
 
 // linked list 
-typedef struct {
+typedef struct linkedList{
     int size;
     node* head; 
 } linkedList;
@@ -23,16 +23,16 @@ typedef struct {
 linkedList new_linkedList();
 
 // adds node to the list
-void add_node(linkedList* l,int data);
+void add_node(linkedList* l,void* data);
 
 // returns 0 if not empty
 int is_empty(node* n);
 
 //returns element at given index
-int get(linkedList l, int index);
+void* get(linkedList l, int index);
 
 // prints a linked list
-void print(linkedList l);
+void print(linkedList l,void (*print)(void* data));
 
 // frees the linked list
 void free_list(linkedList l);
