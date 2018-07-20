@@ -8,7 +8,7 @@
 
 
 typedef struct node {
-    void* data; // here node id
+    void* data; 
     struct node* next;
 }node;
 

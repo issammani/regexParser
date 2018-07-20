@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "test_l.h"
+#include "linkedlist.h"
 
 // creates an empty linked list
 linkedList new_linkedList(){

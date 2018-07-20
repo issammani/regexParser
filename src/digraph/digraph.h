@@ -13,6 +13,12 @@
 #include "../linkedlist/linkedlist.h"
 #include <stdbool.h>
 
+// used as a generic placeholder for any addtional data besides the neighbor
+typedef struct {
+    int w; // neighbor
+    void* additional_data; // cost, weight, transition character...
+}adj_node;
+
 // directed graph definition
 typedef struct {
     int V; // number of vertices
@@ -29,7 +35,7 @@ diGraph new_diGraph(int V);
 void validate_vertex(diGraph dg,int v);
 
 // add edge between two vertices
-void add_edge(diGraph* dg,int v, int w);
+void add_edge(diGraph* dg,int v, int w, void* value);
 
 // returns adj list for vertex v
 linkedList adj(diGraph dg,int v);
@@ -46,10 +52,10 @@ int number_of_vertices(diGraph dg);
 //returns the number of edges
 int number_of_edges(diGraph dg);
 
-void add_to_adj(diGraph* dg,int index,int value);
+void add_to_adj(diGraph* dg,int index,adj_node* an);
 
 // prints adjacency list
-void print_adj(diGraph dg);
+void print_adj(diGraph dg,void (*to_string)(void* data));
 
 //computes the vertices in digraph G that are reachable from the source vertex s.
 void directed_dfs(diGraph* dg, int s);

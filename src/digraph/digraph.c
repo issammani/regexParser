@@ -32,31 +32,42 @@ void validate_vertex(diGraph dg,int v){
 }
 
 // add edge between two vertices
-void add_edge(diGraph* dg,int v, int w){
+void add_edge(diGraph* dg,int v, int w,void* value){
     validate_vertex(*dg,v);
     validate_vertex(*dg,w);
     
-    add_to_adj(dg,v,w);
+    adj_node an = {w,value};
+    printf("[add_edge] : v = %d and an.w= %d \n",v,an.w);
+    add_to_adj(dg,v,&an);
     dg->indegree[w]++;
     dg->E++;
 }
 
-void add_to_adj(diGraph* dg,int index,int value){
+void add_to_adj(diGraph* dg,int index,adj_node* an){
     linkedList* tmp = dg->adj;
+    printf("[add_to_adj] : v = %d and an->w = %d  \n",index,an->w);
     for(int i = 0; i < index; i++,tmp++);
-    add_node(tmp,value);
+        add_node(tmp,an);
+}
+// prints an adjacency node
+void print_adj_node(void* an){
+    printf("%d : ",((adj_node* )an)->w);
+    // printf("%s : ",(char*)((adj_node* )an)->additional_data);
+    printf("\t ->");
 }
 
 // prints adjacency list
-void print_adj(diGraph dg){
+void print_adj(diGraph dg,void (*additional_data_to_string)(void* additional_data)){
     
     linkedList* tmp = dg.adj;
     for(int i =0 ; i < dg.V; i++,tmp++){
         printf("%d -->   ",i);
-        print(*tmp);
+        print(*tmp,print_adj_node);
         printf("\n");
     }
 }
+
+
 // returns adj list for vertex v
 linkedList adj(diGraph dg,int v){
     validate_vertex(dg,v);
@@ -129,8 +140,11 @@ void dfs(diGraph* dg, int v){
     dg->marked[v] = true;
     linkedList neighbors = adj(*dg,v);
 
-    for (int i=0; i < neighbors.size ;i++) 
-            if (!dg->marked[get(neighbors,i)]) dfs(dg, get(neighbors,i));
+    for (int i=0; i < neighbors.size ;i++){
+        int current_neighbor = ( (adj_node*) get(neighbors,i) )->w;
+        if (!dg->marked[current_neighbor]) dfs(dg, current_neighbor);
+    }
+            
 }
 
 void marked(diGraph* dg,int* s,int size){
