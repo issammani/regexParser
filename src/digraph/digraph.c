@@ -19,7 +19,10 @@ diGraph new_diGraph(int V){
 
     dg.indegree = malloc(V * sizeof(int));
     dg.adj = malloc(V * sizeof(linkedList));
-
+    
+    linkedList *ptr = dg.adj;
+    for(int i=0; i < V ;i++, ptr++)
+        *ptr = new_linkedList();
     return dg;
 }
 
@@ -36,18 +39,18 @@ void add_edge(diGraph* dg,int v, int w,void* value){
     validate_vertex(*dg,v);
     validate_vertex(*dg,w);
     
-    adj_node an = {w,value};
-    printf("[add_edge] : v = %d and an.w= %d \n",v,an.w);
-    add_to_adj(dg,v,&an);
+    adj_node* an = malloc(sizeof(adj_node));
+    an->w = w;
+    an->additional_data = value;
+    add_to_adj(dg,v,an);
     dg->indegree[w]++;
     dg->E++;
 }
 
 void add_to_adj(diGraph* dg,int index,adj_node* an){
     linkedList* tmp = dg->adj;
-    printf("[add_to_adj] : v = %d and an->w = %d  \n",index,an->w);
     for(int i = 0; i < index; i++,tmp++);
-        add_node(tmp,an);
+    add_node(tmp,an);
 }
 // prints an adjacency node
 void print_adj_node(void* an){

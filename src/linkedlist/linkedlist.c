@@ -32,16 +32,16 @@ int is_empty(node* n){
 void* get(linkedList l, int index){
     
     int counter = 0;
-    index = (l.size - 1) - index;
+    int _index = (l.size - 1) - index;
     node* tmp = l.head;
     
     while(tmp){
-        if(counter == index)
+        if(counter == _index)
             return tmp->data;
         tmp = tmp->next;
         counter++;
     }
-    fprintf(stderr,"Given index %d is too big (%d) \n",index,counter);
+    fprintf(stderr,"Given index %d is too big (%d) \n",index,counter-1);
     exit(1);
 }
 
