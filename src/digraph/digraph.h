@@ -55,7 +55,7 @@ int number_of_edges(diGraph dg);
 void add_to_adj(diGraph* dg,int index,adj_node* an);
 
 // prints adjacency list
-void print_adj(diGraph dg,void (*to_string)(void* data));
+void print_adj(diGraph dg,void (*adjacency_node_print)(void* an));
 
 //computes the vertices in digraph G that are reachable from the source vertex s.
 void directed_dfs(diGraph* dg, int s);

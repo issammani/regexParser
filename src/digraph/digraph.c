@@ -52,20 +52,21 @@ void add_to_adj(diGraph* dg,int index,adj_node* an){
     for(int i = 0; i < index; i++,tmp++);
     add_node(tmp,an);
 }
-// prints an adjacency node
-void print_adj_node(void* an){
-    printf("%d : ",((adj_node* )an)->w);
-    // printf("%s : ",(char*)((adj_node* )an)->additional_data);
-    printf("\t ->");
-}
+// // prints an adjacency node
+// void print_adj_node(void* an){
+//     adj_node* _an = (adj_node*)
+//     printf("%d : ",((adj_node* )an)->w);
+//     // printf("%s : ",(char*)((adj_node* )an)->additional_data);
+//     printf("\t ->");
+// }
 
 // prints adjacency list
-void print_adj(diGraph dg,void (*additional_data_to_string)(void* additional_data)){
+void print_adj(diGraph dg,void (*adjacency_node_print)(void* an)){
     
     linkedList* tmp = dg.adj;
     for(int i =0 ; i < dg.V; i++,tmp++){
         printf("%d -->   ",i);
-        print(*tmp,print_adj_node);
+        print(*tmp,adjacency_node_print);
         printf("\n");
     }
 }
