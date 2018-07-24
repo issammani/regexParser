@@ -64,9 +64,7 @@ void directed_dfs(diGraph* dg, int s);
 void _directed_dfs(diGraph* dg, int* s,int size);
 
 //recusively finds reachable nodes from node v
-void dfs(diGraph* dg, int v);
+static void dfs(diGraph* dg, int v);
 
-// prints all reachable vertices from source(s) s.
-void marked(diGraph* dg,int* s,int size);
 
 #endif
