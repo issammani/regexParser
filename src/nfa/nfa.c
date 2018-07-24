@@ -38,6 +38,13 @@ void validate_state(NFA nfa, int q){
 
 // adds a transition between two states ('/0' for epsilon transition)
 void add_transition(NFA *nfa,int q1, int q2,char symbol){
+
+    validate_state(*nfa,q1);
+    validate_state(*nfa,q2);
+    char* _sym = malloc(sizeof(char));
+    *_sym = symbol;
     
-    //TODO
+    // a transition is represented by an edge in the directed graph
+    add_edge(&nfa->dg,q1,q2,_sym);
+
 }
