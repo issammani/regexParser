@@ -29,5 +29,8 @@ void validate_state(NFA nfa, int q);
 // adds a transition between two states
 void add_transition(NFA *nfa,int q1, int q2,char symbol);
 
+// prints all reachable states for every states
+void print_nfa(NFA nfa);
+static void print_symbol(void* data);
 
 #endif

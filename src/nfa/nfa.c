@@ -48,3 +48,18 @@ void add_transition(NFA *nfa,int q1, int q2,char symbol){
     add_edge(&nfa->dg,q1,q2,_sym);
 
 }
+
+// prints all reachable states for every states
+void print_nfa(NFA nfa){
+    if(nfa.initial_state != -1)
+        printf("Initial state : %d \n",nfa.initial_state);
+    print_adj(nfa.dg,print_symbol);
+}
+
+
+static void print_symbol(void* data){
+    adj_node* an = (adj_node*)data;
+    int target = an->w;
+    char symbol= *((char*)an->additional_data); 
+    printf("(%d,%c) \t",target,symbol);
+}
