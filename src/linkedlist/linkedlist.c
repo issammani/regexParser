@@ -61,6 +61,7 @@ void free_list(linkedList l) {
     while (tmp) {
         l.head = tmp;
         tmp = tmp->next;
+        free(l.head->data);
         free(l.head);
     }
 }

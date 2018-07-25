@@ -66,5 +66,7 @@ void _directed_dfs(diGraph* dg, int* s,int size);
 //recusively finds reachable nodes from node v
 static void dfs(diGraph* dg, int v);
 
+// frees a graph
+void free_graph(diGraph* dg);
 
 #endif

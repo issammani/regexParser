@@ -140,5 +140,21 @@ static void dfs(diGraph* dg, int v){
             
 }
 
+// frees a graph
+void free_graph(diGraph* dg){
+
+    // free the adjecency list
+    for(int i=0; i < dg->V;i++)
+        free_list(adj(*dg,i));
+    
+    free(dg->adj);
+
+    // free indegree 
+    free(dg->indegree);
+
+    // free marked array
+    free(dg->marked);
+}
+
 
 
