@@ -9,6 +9,7 @@ typedef struct {
     diGraph dg;
     int initial_state;
     int* final_states;
+    linkedList to_free;
 }NFA;
 
 // for epsilon transition
@@ -32,5 +33,8 @@ void add_transition(NFA *nfa,int q1, int q2,char symbol);
 // prints all reachable states for every states
 void print_nfa(NFA nfa);
 static void print_symbol(void* data);
+
+// frees an nfa
+void free_nfa(NFA nfa);
 
 #endif

@@ -8,7 +8,7 @@ NFA new_nfa(int Q){
     NFA nfa;
     nfa.dg = new_diGraph(Q);
     nfa.initial_state = -1;
-
+    nfa.to_free = new_linkedList();
     return nfa;
 }
 
@@ -47,6 +47,9 @@ void add_transition(NFA *nfa,int q1, int q2,char symbol){
     // a transition is represented by an edge in the directed graph
     add_edge(&nfa->dg,q1,q2,_sym);
 
+    // need better solution
+    add_node(&nfa->to_free,_sym);
+
 }
 
 // prints all reachable states for every states
@@ -62,4 +65,16 @@ static void print_symbol(void* data){
     int target = an->w;
     char symbol= *((char*)an->additional_data); 
     printf("(%d,%c) \t",target,symbol);
+}
+
+// frees an nfa
+void free_nfa(NFA nfa){
+    
+    // free all allocated symbols (need a better way to do this)
+    free_list(nfa.to_free);
+
+    // free the directed graph
+    free_graph(&nfa.dg);
+
+
 }
