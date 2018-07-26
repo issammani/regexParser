@@ -30,19 +30,30 @@ int is_empty(node* n){
 
 //returns element at given index
 void* get(linkedList l, int index){
-    
+    return get_node(l,index)->data;
+}
+
+//returns node at given index
+node* get_node(linkedList l, int index){
     int counter = 0;
     int _index = (l.size - 1) - index;
     node* tmp = l.head;
     
     while(tmp){
         if(counter == _index)
-            return tmp->data;
+            return tmp;
         tmp = tmp->next;
         counter++;
     }
     fprintf(stderr,"Given index %d is too big (%d) \n",index,counter-1);
-    exit(1);
+    exit(1);  
+}
+
+// joins two linkedlists together
+void join_list(linkedList l1,linkedList l2){
+    node* l1_last = get_node(l1,0);
+    l1.size += l2.size;
+    l1_last->next = l2.head;
 }
 
 // prints a linked list

@@ -31,6 +31,12 @@ int is_empty(node* n);
 //returns element at given index
 void* get(linkedList l, int index);
 
+//returns node at given index
+node* get_node(linkedList l, int index);
+
+// joins two linkedlist together
+void join_list(linkedList l1,linkedList l2);
+
 // prints a linked list
 void print(linkedList l,void (*print)(void* data));
 
