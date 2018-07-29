@@ -50,14 +50,17 @@ node* get_node(linkedList l, int index){
 }
 
 // joins two linkedlists together
-void join_list(linkedList l1,linkedList l2){
-    if(is_empty(l1.head)){
-        l1 = l2;
+void join_list(linkedList* l1,linkedList* l2){
+
+
+    if(is_empty(l1->head)){
+        *l1 = *l2;
         return;
     }
-    node* l1_last = get_node(l1,0);
-    l1.size += l2.size;
-    l1_last->next = l2.head;
+    
+    node* l1_last = get_node(*l1,0);
+    l1->size += l2->size;
+    l1_last->next = l2->head;
 }
 
 // prints a linked list
