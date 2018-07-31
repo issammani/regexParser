@@ -63,8 +63,13 @@ void print_nfa(NFA nfa){
 static void print_symbol(void* data){
     adj_node* an = (adj_node*)data;
     int target = an->w;
-    char symbol= *((char*)an->additional_data); 
-    printf("(%d,%c) \t",target,symbol);
+    char symbol= *((char*)an->additional_data);
+    
+    printf("(%d,",target);
+    if(symbol == epsilon)
+        printf("eps) \t");
+    else
+        printf("%c) \t",symbol);
 }
 
 // frees an nfa

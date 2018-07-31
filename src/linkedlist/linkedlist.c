@@ -1,23 +1,44 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "linkedlist.h"
 
 // creates an empty linked list
-linkedList new_linkedList(){
+linkedList new_linkedList(size_t data_size){
     linkedList l ;
     l.size = 0;
+    l.data_size = data_size;
     l.head = NULL;
     return l;
+}
+
+// returns a copy of a linkedlist
+linkedList copy_list(linkedList l){
+    
+    // create an empty linkedlist
+    linkedList _l = new_linkedList(l.data_size);
+
+    // allocate and copy each node
+    for(int i=0; i < l.size; i++)
+        add_node(&_l,get(l,i));
+
+    return _l;
+
 }
 
 // adds node to the list
 void add_node(linkedList* l,void* data){
     node* n = malloc(sizeof(node));
+    void* _data = malloc(sizeof(l->data_size));
+    memcpy(_data,data,l->data_size);
     
-    if(n == NULL)
+    if(n == NULL || _data == NULL){
+        fprintf(stderr,"Memory allocation unsuccessful \n");
         exit(1); // No memory
+    }
+
     l->size++;
-    n->data = data;
+    n->data = _data;
     n->next = l->head;
     
     l->head = n;
@@ -75,11 +96,11 @@ void print(linkedList l,void (*to_string)(void* data)){
 
 // frees the linked list
 void free_list(linkedList l) {
-    node *tmp = l.head;
-    while (tmp) {
-        l.head = tmp;
-        tmp = tmp->next;
-        free(l.head->data);
-        free(l.head);
+    
+    node *tmp ;
+    for(int i=0; i < l.size;i++){
+        tmp = get_node(l,i);
+        free(tmp->data);
+        free(tmp);
     }
 }

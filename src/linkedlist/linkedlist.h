@@ -15,12 +15,16 @@ typedef struct node {
 // linked list 
 typedef struct linkedList{
     int size;
+    size_t data_size;
     node* head; 
 } linkedList;
 
 
 // creates an empty linked list
-linkedList new_linkedList();
+linkedList new_linkedList(size_t data_size);
+
+// returns a copy of a linkedlist
+linkedList copy_list(linkedList l);
 
 // adds node to the list
 void add_node(linkedList* l,void* data);
