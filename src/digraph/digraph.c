@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 #include "digraph.h"
 #include "../linkedlist/linkedlist.h"
 
@@ -22,12 +23,31 @@ diGraph new_diGraph(int V){
     dg.adj = malloc(V * sizeof(linkedList));
     linkedList *ptr = dg.adj;
     for(int i=0; i < V ;i++, ptr++)
-        *ptr = new_linkedList();
+        *ptr = new_linkedList(sizeof(adj_node));
 
     // allocate memory for marked
     dg.marked = malloc(dg.V * sizeof(bool));
 
     return dg;
+}
+
+// returns a copy of a graph
+diGraph copy_graph(diGraph dg){
+    
+    diGraph _dg = new_diGraph(dg.V);
+
+    // set number of edges
+    _dg.E = dg.E;
+
+    // copy indegree array
+    memcpy(_dg.indegree,dg.indegree,sizeof(int) * dg.V);
+
+    // copy the adj list
+    linkedList* ptr = _dg.adj; 
+    for(int i=0; i < _dg.V; i++,ptr++)
+        *ptr = copy_list(adj(dg,i));
+    
+    return _dg;
 }
 
 // makes sure vertex is in range
@@ -43,10 +63,10 @@ void add_edge(diGraph* dg,int v, int w,void* value){
     validate_vertex(*dg,v);
     validate_vertex(*dg,w);
     
-    adj_node* an = malloc(sizeof(adj_node));
-    an->w = w;
-    an->additional_data = value;
-    add_to_adj(dg,v,an);
+    adj_node an ;
+    an.w = w;
+    an.additional_data = value;
+    add_to_adj(dg,v,&an);
     dg->indegree[w]++;
     dg->E++;
 }

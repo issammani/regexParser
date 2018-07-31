@@ -31,6 +31,9 @@ typedef struct {
 // creates a new directed graph
 diGraph new_diGraph(int V);
 
+// returns a copy of a graph
+diGraph copy_graph(diGraph dg);
+
 // makes sure vertex is in range
 void validate_vertex(diGraph dg,int v);
 
