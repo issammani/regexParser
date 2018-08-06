@@ -5,11 +5,12 @@
 
 
 // NFA structure
-typedef struct {
+typedef struct NFA{
     diGraph dg;
     int initial_state;
     int* final_states;
-    char** to_free;
+    char** sym_to_free;
+    struct NFA* nfa_to_free;
 }NFA;
 
 // for epsilon transition
@@ -22,7 +23,7 @@ NFA new_nfa(int Q);
 NFA nfa_from_file(char* filename);
 
 // returns a copy of an nfa
-NFA copy_nfa(NFA nfa);
+NFA copy_nfa(NFA nfa,int shift_by);
 
 // sets the initial state
 void set_initial_state(NFA *nfa,int qs);
