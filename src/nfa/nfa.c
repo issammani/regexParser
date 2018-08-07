@@ -177,13 +177,36 @@ NFA union_fragment(NFA n1,NFA n2){
     n.nfa_to_free[0] = _n1;
     n.nfa_to_free[1] = _n2;
 
-
-    
     return n;
 }
 
+// Kleene closure fragement (*)
+NFA closure_fragment(NFA n1){
+    int _size = n1.dg.V + 2;
+    
+    NFA n = new_nfa(_size);
+    
+    n.nfa_to_free = malloc(sizeof(NFA));
+    NFA _n1 = copy_nfa(n1,1);
 
-NFA closure_fragment(NFA n1);
+    linkedList *ptr = n.dg.adj + 1;
+    linkedList *n_ptr = _n1.dg.adj;
+    
+    for(int i=1; i <= n1.dg.V; i++,ptr++,n_ptr++){
+        join_list(ptr,n_ptr);
+    }
+
+    // add first and last transitions
+    add_transition(&n,0,1,epsilon);//initial_state_n --> _n1
+    add_transition(&n,0,_size - 1,epsilon);//initial_state_n --> final_state_n
+    add_transition(&n,n1.dg.V,_size - 1,epsilon);//final_state_n1 --> final_state_n
+    add_transition(&n,_size - 1,1,epsilon);//final_state_n --> initial_state_n1
+
+    // keep track of the newly created nfas to free later
+    n.nfa_to_free[0] = _n1;
+
+    return n;
+}
 
 
 // frees an nfa
@@ -197,7 +220,8 @@ void free_nfa(NFA nfa){
     if(nfa.nfa_to_free){
         // free all allocated nfa copys (need a better way to do this)
         free_nfa(nfa.nfa_to_free[0]);
-        free_nfa(nfa.nfa_to_free[1]);
+        free_nfa(nfa.nfa_to_free[1]); // TOFIX : kleene star has only one nfa 
+    
         free(nfa.nfa_to_free);
     }
 
