@@ -8,7 +8,7 @@
 typedef struct NFA{
     diGraph dg;
     int initial_state;
-    int* final_states;
+    linkedList final_states;
     char** sym_to_free;
     struct NFA* nfa_to_free;
 }NFA;
@@ -25,8 +25,23 @@ NFA nfa_from_file(char* filename);
 // returns a copy of an nfa
 NFA copy_nfa(NFA nfa,int shift_by);
 
+// adds shift value to existing states in a linkedlist
+static void shift_states(linkedList *l,int shift_by);
+
 // sets the initial state
 void set_initial_state(NFA *nfa,int qs);
+
+// adds final state to the list
+void add_final_state(NFA *nfa,int qf);
+
+// removes final state from the list
+void remove_final_state(NFA *nfa,int qf);
+
+// removes all final states from the list
+void remove_all_final_states(NFA *nfa);
+
+// returns true if state q is final
+int is_final(NFA nfa,int q);
 
 // checks if intial state already exists
 void assert_initial(NFA nfa,int qs);
@@ -40,6 +55,7 @@ void add_transition(NFA *nfa,int q1, int q2,char symbol);
 // prints all reachable states for every states
 void print_nfa(NFA nfa);
 static void print_symbol(void* data);
+static void print_int(void* data);
 
 // implements the five basic NFA-fragments
 NFA character_fragment(char c);

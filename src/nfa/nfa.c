@@ -9,6 +9,7 @@ NFA new_nfa(int Q){
     NFA nfa;
     nfa.dg = new_diGraph(Q);
     nfa.initial_state = -1;
+    nfa.final_states = new_linkedList(sizeof(int));
     nfa.sym_to_free = malloc(sizeof(char*));
     nfa.nfa_to_free = NULL;
     return nfa;
@@ -27,27 +28,65 @@ NFA copy_nfa(NFA nfa,int shift_by){
     free_graph(&_nfa.dg); // TOFIX
     _nfa.dg = copy_graph(nfa.dg);
     
+    // set initial and final states
     _nfa.initial_state = nfa.initial_state;
+    _nfa.final_states = copy_list(nfa.final_states);
+    shift_states(&_nfa.final_states,shift_by);
 
-    // only if shift_by is greater than zero : assuming the id must always be 0 or greater no negatives
-    if(shift_by != 0)
-        for(int i=0; i < _nfa.dg.V;i++){
-            linkedList tmp = adj(_nfa.dg,i);
-            for(int j=0; j < tmp.size;j++){
-                void* data = get(tmp,j);
-                int* w = (int*) data;
-                *w += shift_by;
-            }
-        }
+    linkedList* ptr = _nfa.dg.adj;
+    for(int i=0; i < _nfa.dg.V;i++,ptr++)
+        shift_states(ptr,shift_by);
 
     return _nfa;
 
+}
+
+// adds shift value to existing states in a linkedlist
+static void shift_states(linkedList *l,int shift_by){
+    // only if shift_by is greater than zero : assuming the id must always be 0 or greater no negatives
+    if(shift_by != 0)
+        for(int i=0; i < l->size;i++){
+            void* data = get(*l,i);
+            int* w = (int*) data;
+            *w += shift_by;
+        }
 }
 
 // sets the initial state
 void set_initial_state(NFA *nfa,int qs){
     assert_initial(*nfa,qs);
     nfa->initial_state = qs;
+}
+
+// adds final state to the list
+void add_final_state(NFA *nfa,int qf){
+    validate_state(*nfa,qf);
+    add_node(&nfa->final_states,&qf);
+}
+
+// removes final state from the list
+void remove_final_state(NFA *nfa,int qf){
+    int index = is_final(*nfa,qf);
+    
+    if(index == -1)
+        return ; // probably should throw some error
+    
+    remove_node(&nfa->final_states,index);
+}
+
+// removes all final states from the list
+void remove_all_final_states(NFA *nfa){
+    while(nfa->final_states.size != 0)
+        remove_node(&nfa->final_states,nfa->final_states.size - 1);
+}
+
+// returns index of state if state q is final otherwise -1
+int is_final(NFA nfa,int q){
+    validate_state(nfa,q);
+    for(int i=0; i < nfa.final_states.size;i++)
+        if( *(int*)get(nfa.final_states,i) == q)
+            return i;
+    return -1;
 }
 
 // checks if intial state already exists
@@ -87,11 +126,19 @@ void add_transition(NFA *nfa,int q1, int q2,char symbol){
 
 // prints all reachable states for every states
 void print_nfa(NFA nfa){
-    printf("Initial state :");
+    printf("Initial state : ");
     if(nfa.initial_state == -1)
         printf("not set \n");
     else
         printf("%d \n",nfa.initial_state);
+    
+    printf("Final states : ");
+    if(is_empty(nfa.final_states.head))
+        printf("none \n");
+    else{
+        print(nfa.final_states,print_int);
+        printf("\n");
+    }
     print_adj(nfa.dg,print_symbol);
 }
 
@@ -108,6 +155,9 @@ static void print_symbol(void* data){
         printf("%c) \t",symbol);
 }
 
+static void print_int(void* data){
+    printf("%d \t", *((int*) data));
+}
 
 // implements the five basic NFA-fragments
 NFA character_fragment(char c){
@@ -224,6 +274,9 @@ void free_nfa(NFA nfa){
     
         free(nfa.nfa_to_free);
     }
+
+    // free list of final states
+    free_list(nfa.final_states);
 
     // free the directed graph
     free_graph(&nfa.dg);
