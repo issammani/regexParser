@@ -66,8 +66,35 @@ node* get_node(linkedList l, int index){
         tmp = tmp->next;
         counter++;
     }
-    fprintf(stderr,"Given index %d is too big (%d) \n",index,counter-1);
+    fprintf(stderr,"Given index %d is not in range [0,%d[ \n",index,l.size);
     exit(1);  
+}
+
+// removes node given an index
+void remove_node(linkedList* l, int index){
+
+    if(is_empty(l->head))
+        return ;
+    
+    if(l->size == 1){
+        l->size = 0;
+        free(l->head->data);
+        free(l->head);
+        l->head = NULL; // otherwise the list is not regarded as empty in the rest of the code
+        return ;
+    }
+
+    node * ptr = get_node(*l,index);
+    if(index == l->size - 1){ // first added element (since this implementation is LIFO)
+        l->head = get_node(*l,index - 1); // get next node
+    }else{
+        node * prev = get_node(*l,index + 1);
+        prev->next = ptr->next;
+    }
+
+    l->size--;
+    free(ptr->data);
+    free(ptr);
 }
 
 // joins two linkedlists together
