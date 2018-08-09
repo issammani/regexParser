@@ -163,6 +163,7 @@ static void print_int(void* data){
 NFA character_fragment(char c){
     NFA n = new_nfa(2);
     set_initial_state(&n,0);
+    add_final_state(&n,1);
     add_transition(&n,0,1,c);
     return n;
 }
@@ -176,10 +177,17 @@ NFA concat_fragment(NFA n1,NFA n2){
     int _size = n1.dg.V + n2.dg.V;
     
     NFA n = new_nfa(_size);
-    n.nfa_to_free = malloc(sizeof(NFA)*2);
+    
+    set_initial_state(&n,0);
+    add_final_state(&n,_size - 1);
 
+    n.nfa_to_free = malloc(sizeof(NFA)*2);
     NFA _n1 = copy_nfa(n1,0);
     NFA _n2 = copy_nfa(n2,n1.dg.V);
+
+    // remove all final states
+    remove_all_final_states(&_n1);
+    remove_all_final_states(&_n2);
     
     linkedList *ptr = n.dg.adj;
     linkedList *n_ptr = _n1.dg.adj;
@@ -204,9 +212,16 @@ NFA union_fragment(NFA n1,NFA n2){
     
     NFA n = new_nfa(_size);
     
+    set_initial_state(&n,0);
+    add_final_state(&n,_size - 1);
+
     n.nfa_to_free = malloc(sizeof(NFA)*2);
     NFA _n1 = copy_nfa(n1,1);
     NFA _n2 = copy_nfa(n2,n1.dg.V + 1);
+
+    // remove all final states
+    remove_all_final_states(&_n1);
+    remove_all_final_states(&_n2);
 
     linkedList *ptr = n.dg.adj + 1;
     linkedList *n_ptr = _n1.dg.adj;
@@ -236,8 +251,14 @@ NFA closure_fragment(NFA n1){
     
     NFA n = new_nfa(_size);
     
+    set_initial_state(&n,0);
+    add_final_state(&n,_size - 1);
+
     n.nfa_to_free = malloc(sizeof(NFA));
     NFA _n1 = copy_nfa(n1,1);
+
+    // remove all final states
+    remove_all_final_states(&_n1);
 
     linkedList *ptr = n.dg.adj + 1;
     linkedList *n_ptr = _n1.dg.adj;
