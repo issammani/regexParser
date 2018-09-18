@@ -41,6 +41,9 @@ node* get_node(linkedList l, int index);
 // removes node given an index
 void remove_node(linkedList* l, int index);
 
+// removes node given an index
+void* pop(linkedList* l);
+
 // joins two linkedlist together
 void join_list(linkedList* l1,linkedList* l2);
 

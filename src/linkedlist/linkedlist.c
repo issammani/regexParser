@@ -70,7 +70,7 @@ node* get_node(linkedList l, int index){
     exit(1);  
 }
 
-// removes node given an index
+// removes node given an index and returns it
 void remove_node(linkedList* l, int index){
 
     if(is_empty(l->head))
@@ -80,7 +80,7 @@ void remove_node(linkedList* l, int index){
         l->size = 0;
         free(l->head->data);
         free(l->head);
-        l->head = NULL; // otherwise the list is not regarded as empty in the rest of the code
+        l->head = NULL; // in order for is_empty to work
         return ;
     }
 
@@ -95,6 +95,25 @@ void remove_node(linkedList* l, int index){
     l->size--;
     free(ptr->data);
     free(ptr);
+}
+
+// removes node given an index and returns it
+void* pop(linkedList* l){
+
+    if(is_empty(l->head))
+        return NULL; // or l->head since it's null !
+    
+    node* tmp = l->head;
+    void* data = malloc(l->data_size);
+    memcpy(data,tmp->data,l->data_size);
+
+    l->head = l->head->next;
+    l->size--;
+
+    free(tmp->data);
+    free(tmp);
+    return data;
+
 }
 
 // joins two linkedlists together
